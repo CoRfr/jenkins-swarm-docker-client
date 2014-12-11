@@ -1,0 +1,17 @@
+[Unit]
+Description=Jenkins Slave Service
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker kill jenkins-slave
+ExecStartPre=-/usr/bin/docker rm -f jenkins-slave
+ExecStartPre=/usr/bin/docker pull corfr/jenkins-swarm-docker-client
+ExecStart=/usr/bin/docker run --rm --name jenkins-slave --volume=/var/run/docker.sock:/var/run/docker.sock --volume=/usr/bin/docker:/usr/bin/docker corfr/jenkins-swarm-docker-client -master ${JENKINS_MASTER}
+ExecStop=/usr/bin/docker stop -t 2 jenkins-slave
+
+[X-Fleet]
+Global=true
+MachineMetadata=role=node
+

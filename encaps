@@ -8,7 +8,16 @@ if [ -z "$BUILD_TAG" ]; then
 fi
 
 if ! docker inspect $BUILD_TAG > /dev/null; then
-    docker run --detach --name $BUILD_TAG $DOCKER_ENCAPS_ARGS $DOCKER_ENCAPS_IMG tail -f /dev/null > /dev/null
+    docker run \
+        --detach \
+        --name $BUILD_TAG \
+        --user=${UID} \
+        --volume $PWD:$PWD \
+        --workdir $PWD \
+        $DOCKER_ENCAPS_ARGS \
+        $DOCKER_ENCAPS_IMG \
+            tail -f /dev/null > /dev/null
+
     if [ $? -ne 0 ]; then
         echo "Unable to launch container from $DOCKER_ENCAPS_IMG"
         exit 1

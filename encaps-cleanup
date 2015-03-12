@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -z "$BUILD_TAG" ]; then
+    echo "No BUILD_TAG"
+    exit 1
+fi
+
+docker kill $BUILD_TAG
+docker rm $BUILD_TAG
+

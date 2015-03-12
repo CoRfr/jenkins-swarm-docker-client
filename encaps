@@ -1,0 +1,19 @@
+#!/bin/sh
+
+DOCKER_ENCAPS_IMG=${DOCKER_ENCAPS_IMG:-"ubuntu:latest"}
+
+if [ -z "$BUILD_TAG" ]; then
+    echo "No BUILD_TAG"
+    exit 1
+fi
+
+if ! docker inspect $BUILD_TAG > /dev/null; then
+    docker run --detach --name $BUILD_TAG $DOCKER_ENCAPS_ARGS $DOCKER_ENCAPS_IMG tail -f /dev/null > /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Unable to launch container from $DOCKER_ENCAPS_IMG"
+        exit 1
+    fi
+fi
+
+docker exec -i $BUILD_TAG /bin/sh < $1
+

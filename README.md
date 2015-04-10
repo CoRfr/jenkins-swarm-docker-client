@@ -28,7 +28,7 @@ If you want to encapsulate that in some container, just replace the shebang:
 Behavior of the script is define by the following env variables:
  - `DOCKER_ENCAPS_IMG` : image used to instantiate the container
  - `DOCKER_ENCAPS_ARGS` : extra arguments that should be given to docker upon instantiation
- - `BUILD_TAG` : Usually provided by Jenkins, format is jenkins-<JOB>-<BUILD_ID>, it is used as the name for the docker instance
+ - `BUILD_TAG` : Usually provided by Jenkins, format is `jenkins-<JOB>-<BUILD_ID>`, it is used as the name for the docker instance
 
 It needs a running container, if the script can't find one it will try to instantiate it.
 

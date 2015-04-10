@@ -1,12 +1,12 @@
 jenkins-swarm-docker-client
 ===========================
 
-Based on csanchez/jenkins-swarm-slave
+Based on `csanchez/jenkins-swarm-slave`
 
 Also provides docker in order to control the docker host.
 
 The idea behind this is to expose a jenkins-slave to a jenkins-master,
-with jobs managing docker containers and volumes in order to acheive the expected goal.
+with jobs managing docker containers and volumes in order to achieve the expected goal.
 
 There is very few assumption about the actual host, except that it runs docker.
 
@@ -26,17 +26,16 @@ If you want to encapsulate that in some container, just replace the shebang:
     python setup.py bdist_egg
 
 Behavior of the script is define by the following env variables:
- - DOCKER_ENCAPS_IMG : image used to instanciate the container
- - DOCKER_ENCAPS_ARGS : extra arguments that should be given to docker upon instanciation
- - BUILD_TAG : Usually provided by Jenkins, format is jenkins-<JOB>-<BUILD_ID>, it is used as the name for the docker instance
+ - `DOCKER_ENCAPS_IMG` : image used to instantiate the container
+ - `DOCKER_ENCAPS_ARGS` : extra arguments that should be given to docker upon instantiation
+ - `BUILD_TAG` : Usually provided by Jenkins, format is jenkins-<JOB>-<BUILD_ID>, it is used as the name for the docker instance
 
-It needs a running container, if the script can't find one it will try to instanciate it.
+It needs a running container, if the script can't find one it will try to instantiate it.
 
-In the exemple above, consider that you want to build your application with python 2.7.9.
-Just inject the variable DOCKER_ENCAPS_IMG=python:2.7.9 and it will use the image from https://registry.hub.docker.com/_/python/ to encapsulate your build.
+In the example above, consider that you want to build your application with python 2.7.9.
+Just inject the variable `DOCKER_ENCAPS_IMG=python:2.7.9` and it will use the image from https://registry.hub.docker.com/_/python/ to encapsulate your build.
 
 Limitations:
- - Don't forget that even if the docker client is running in the jenkins container, the server is still on the host.
+ - Don't forget that even if the docker client is running in the Jenkins container, the server is still on the host.
    Therefore, paths, etc ... should be relative/accessible from the host
  - The workspace is considered as being a shared volume between the jenkins-slave container and the host for this reason
-

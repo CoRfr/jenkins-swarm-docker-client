@@ -12,3 +12,6 @@ RUN usermod -a -G docker jenkins-slave
 COPY encaps /usr/bin/encaps
 COPY encaps-cleanup /usr/bin/encaps-cleanup
 
+RUN chown -R jenkins-slave:jenkins-slave /home/jenkins-slave
+USER jenkins-slave
+

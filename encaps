@@ -27,4 +27,8 @@ if ! docker inspect $BUILD_TAG > /dev/null; then
 fi
 
 docker exec -i $BUILD_TAG /bin/sh < $1
+RET=$?
+
+echo "Exit $RET"
+exit $RET
 

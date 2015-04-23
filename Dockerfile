@@ -2,10 +2,16 @@ FROM csanchez/jenkins-swarm-slave:latest
 
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
-USER root
-RUN apt-get update && apt-get install -y docker.io
+ENV DOCKER_VERSION 1.5.0
 
-RUN groupmod -g 233 docker
+USER root
+RUN ( apt-get update && apt-get -y install git )
+RUN ( cd /tmp && \
+      wget -q -O /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION && \
+      chmod +x /usr/bin/docker )
+
+RUN groupadd -g 233 docker
+RUN chown root:docker /usr/bin/docker
 RUN usermod -a -G docker jenkins-slave
 
 # Docker encapsulation helpers

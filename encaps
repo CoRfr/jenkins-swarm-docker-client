@@ -10,6 +10,7 @@ fi
 UID=`id -u`
 
 if ! docker inspect $BUILD_TAG > /dev/null; then
+    docker pull $DOCKER_ENCAPS_IMG
     docker run \
         --detach \
         --name $BUILD_TAG \

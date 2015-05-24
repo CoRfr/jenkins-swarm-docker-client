@@ -28,7 +28,8 @@ If you want to encapsulate that in some container, just replace the shebang:
 Behavior of the script is define by the following env variables:
  - `DOCKER_ENCAPS_IMG` : image used to instantiate the container
  - `DOCKER_ENCAPS_ARGS` : extra arguments that should be given to docker upon instantiation
- - `BUILD_TAG` : Usually provided by Jenkins, format is `jenkins-<JOB>-<BUILD_ID>`, it is used as the name for the docker instance
+ - `DOCKER_ENCAPS_NAME` : name used for the container, default to BUILD_TAG which is usually provided by Jenkins, format is `jenkins-<JOB>-<BUILD_ID>`
+ - `DOCKER_ENCAPS_SHELL` : to control the actual program executing your script, default to /bin/sh
 
 It needs a running container, if the script can't find one it will try to instantiate it.
 
@@ -39,3 +40,4 @@ Limitations:
  - Don't forget that even if the docker client is running in the Jenkins container, the server is still on the host.
    Therefore, paths, etc ... should be relative/accessible from the host
  - The workspace is considered as being a shared volume between the jenkins-slave container and the host for this reason
+

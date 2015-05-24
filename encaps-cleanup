@@ -10,6 +10,6 @@ if [ -z "$DOCKER_ENCAPS_NAME" ]; then
 fi
 
 
-docker kill $BUILD_TAG
-docker rm $BUILD_TAG
+docker kill $DOCKER_ENCAPS_NAME
+docker rm $DOCKER_ENCAPS_NAME
 

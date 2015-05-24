@@ -9,7 +9,7 @@ if [ -z "$DOCKER_ENCAPS_NAME" ]; then
         exit 1
     fi
 
-    DOCKER_ENCAPS_NAME=$(echo $BUILD_TAG | tr ',' '_')
+    DOCKER_ENCAPS_NAME=$(echo $BUILD_TAG | sed 's/[^a-zA-Z0-9_.-]/_/g')
 fi
 
 UID=`id -u`

@@ -3,18 +3,22 @@
 DOCKER_ENCAPS_IMG=${DOCKER_ENCAPS_IMG:-"ubuntu:latest"}
 DOCKER_ENCAPS_SHELL=${DOCKER_ENCAPS_SHELL:-"/bin/sh"}
 
-if [ -z "$BUILD_TAG" ]; then
-    echo "No BUILD_TAG"
-    exit 1
+if [ -z "$DOCKER_ENCAPS_NAME" ]; then
+    if [ -z "$BUILD_TAG" ]; then
+        echo "No DOCKER_ENCAPS_NAME or BUILD_TAG"
+        exit 1
+    fi
+
+    DOCKER_ENCAPS_NAME=$(echo $BUILD_TAG | tr ',' '_')
 fi
 
 UID=`id -u`
 
-if ! docker inspect $BUILD_TAG > /dev/null; then
+if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null; then
     docker pull $DOCKER_ENCAPS_IMG
     docker run \
         --detach \
-        --name $BUILD_TAG \
+        --name $DOCKER_ENCAPS_NAME \
         --user $UID \
         --volume $PWD:$PWD \
         --workdir $PWD \
@@ -28,7 +32,7 @@ if ! docker inspect $BUILD_TAG > /dev/null; then
     fi
 fi
 
-docker exec -i $BUILD_TAG $DOCKER_ENCAPS_SHELL < $1
+docker exec -i $DOCKER_ENCAPS_NAME $DOCKER_ENCAPS_SHELL < $1
 RET=$?
 
 echo "Exit $RET"

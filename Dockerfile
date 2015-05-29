@@ -10,9 +10,13 @@ RUN ( cd /tmp && \
       wget -q -O /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION && \
       chmod +x /usr/bin/docker )
 
+# Provide docker group and make the executable accessible
 RUN groupadd -g 233 docker
 RUN chown root:docker /usr/bin/docker
 RUN usermod -a -G docker jenkins-slave
+
+# bash as default shell
+RUN ( ln -sf bash /bin/sh )
 
 # Docker encapsulation helpers
 COPY encaps /usr/bin/encaps

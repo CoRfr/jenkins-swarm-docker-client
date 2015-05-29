@@ -12,7 +12,9 @@ if [ -z "$DOCKER_ENCAPS_NAME" ]; then
     DOCKER_ENCAPS_NAME=$(echo $BUILD_TAG | sed 's/[^a-zA-Z0-9_.-]/_/g')
 fi
 
-UID=`id -u`
+if [ -z "$UID" ]; then
+    UID=$(id -u)
+fi
 
 if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null; then
     docker pull $DOCKER_ENCAPS_IMG

@@ -2,7 +2,7 @@ FROM csanchez/jenkins-swarm-slave:latest
 
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
-ENV DOCKER_VERSION 1.5.0
+ENV DOCKER_VERSION 1.7.0
 
 USER root
 RUN ( apt-get update && apt-get -y install git )

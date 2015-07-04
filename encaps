@@ -34,7 +34,7 @@ if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null; then
     fi
 fi
 
-docker exec -i $DOCKER_ENCAPS_NAME $DOCKER_ENCAPS_SHELL < $1
+docker exec -i --user $UID $DOCKER_ENCAPS_NAME $DOCKER_ENCAPS_SHELL < $1
 RET=$?
 
 echo "Exit $RET"

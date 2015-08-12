@@ -34,7 +34,13 @@ if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null; then
     fi
 fi
 
-docker exec -i $DOCKER_ENCAPS_NAME $DOCKER_ENCAPS_SHELL < $1
+TMP_FILE="/tmp/script-$(sha1sum $1 | awk '{print $1}')"
+
+# Copy file in container
+docker exec -i $DOCKER_ENCAPS_NAME $DOCKER_ENCAPS_SHELL -c "cat > $TMP_FILE" < $1
+
+# Exec file
+docker exec $DOCKER_ENCAPS_NAME $DOCKER_ENCAPS_SHELL $TMP_FILE
 RET=$?
 
 echo "Exit $RET"

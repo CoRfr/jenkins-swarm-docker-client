@@ -16,7 +16,10 @@ RUN chown root:docker /usr/bin/docker
 RUN usermod -a -G docker jenkins-slave
 
 # bash as default shell
-RUN ( ln -sf bash /bin/sh )
+RUN ( \
+        echo "dash dash/sh boolean false" | debconf-set-selections && \
+        DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash \
+    )
 
 # Docker encapsulation helpers
 COPY encaps /usr/bin/encaps

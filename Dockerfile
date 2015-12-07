@@ -5,7 +5,7 @@ MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 ENV DOCKER_VERSION 1.6.2
 
 USER root
-RUN ( apt-get update && apt-get -y install git )
+RUN ( apt-get update && apt-get -y install git bzip2 )
 RUN ( cd /tmp && \
       wget -q -O /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION && \
       chmod +x /usr/bin/docker )

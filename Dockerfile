@@ -9,7 +9,7 @@ ENV JENKINS_BUILD 133
 ENV JENKINS_SWARM_VERSION 2.1-SNAPSHOT
 ENV SWARM_PLUGIN_URL https://jenkins.ci.cloudbees.com/job/plugins/job/swarm-plugin/org.jenkins-ci.plugins$swarm-client/$JENKINS_BUILD/artifact/org.jenkins-ci.plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
-ENV DOCKER_VERSION 1.8.1
+ENV DOCKER_VERSION 1.8.3
 ENV HOME /home/jenkins-slave
 
 RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave

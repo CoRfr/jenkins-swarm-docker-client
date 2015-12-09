@@ -19,7 +19,7 @@ RUN curl --create-dirs -sSLo /usr/share/jenkins/swarm-client-$JENKINS_SWARM_VERS
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
 
 RUN ( apt-get update && \
-      apt-get -y install net-tools git bzip2 && \
+      apt-get -y install net-tools git python bzip2 && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \

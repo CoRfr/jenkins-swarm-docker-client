@@ -7,19 +7,21 @@ MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
 ENV JENKINS_BUILD 133
 ENV JENKINS_SWARM_VERSION 2.1-SNAPSHOT
-ENV SWARM_PLUGIN_URL https://jenkins.ci.cloudbees.com/job/plugins/job/swarm-plugin/org.jenkins-ci.plugins$swarm-client/$JENKINS_BUILD/artifact/org.jenkins-ci.plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
+ENV SWARM_PLUGIN_URL https://jenkins.ci.cloudbees.com/job/plugins/job/swarm-plugin/org.jenkins-ci.plugins\$swarm-client/$JENKINS_BUILD/artifact/org.jenkins-ci.plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
 ENV DOCKER_VERSION 1.8.3
 ENV HOME /home/jenkins-slave
 
 RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
-RUN curl --create-dirs -sSLo /usr/share/jenkins/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar $SWARM_PLUGIN_URL \
-  && chmod 755 /usr/share/jenkins
+RUN ( \
+      mkdir -p /usr/share/jenkins && \
+      wget -O /usr/share/jenkins/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar $SWARM_PLUGIN_URL && \
+      chmod -R 755 /usr/share/jenkins )
 
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
 
 RUN ( apt-get update && \
-      apt-get -y install net-tools git bzip2 && \
+      apt-get -y install net-tools git python bzip2 && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \

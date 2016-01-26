@@ -5,7 +5,7 @@ MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 #ENV JENKINS_SWARM_VERSION 2.0
 #ENV SWARM_PLUGIN_URL http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
-ENV JENKINS_BUILD 133
+ENV JENKINS_BUILD lastStableBuild
 ENV JENKINS_SWARM_VERSION 2.1-SNAPSHOT
 ENV SWARM_PLUGIN_URL https://jenkins.ci.cloudbees.com/job/plugins/job/swarm-plugin/org.jenkins-ci.plugins\$swarm-client/$JENKINS_BUILD/artifact/org.jenkins-ci.plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 

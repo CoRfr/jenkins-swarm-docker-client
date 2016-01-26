@@ -9,6 +9,7 @@ ENV JENKINS_BUILD 133
 ENV JENKINS_SWARM_VERSION 2.1-SNAPSHOT
 ENV SWARM_PLUGIN_URL https://jenkins.ci.cloudbees.com/job/plugins/job/swarm-plugin/org.jenkins-ci.plugins\$swarm-client/$JENKINS_BUILD/artifact/org.jenkins-ci.plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
+# Docker version follows stable from CoreOS
 ENV DOCKER_VERSION 1.8.3
 ENV HOME /home/jenkins-slave
 
@@ -21,14 +22,14 @@ RUN ( \
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
 
 RUN ( apt-get update && \
-      apt-get -y install net-tools git python bzip2 && \
+      apt-get -y install net-tools git python bzip2 jq && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \
       wget -q -O /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION && \
       chmod +x /usr/bin/docker )
 
-# Provide docker group and make the executable accessible
+# Provide docker group and make the executable accessible (ids from CoreOS)
 RUN groupadd -g 233 docker
 RUN chown root:docker /usr/bin/docker
 RUN usermod -a -G docker jenkins-slave

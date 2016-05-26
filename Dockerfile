@@ -29,10 +29,11 @@ RUN ( cd /tmp && \
       wget -q -O /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION && \
       chmod +x /usr/bin/docker )
 
-# Provide docker group and make the executable accessible (ids from CoreOS)
+# Provide docker group and make the executable accessible (ids from CoreOS & Debian)
 RUN groupadd -g 233 docker
+RUN groupadd -g 999 docker2
+RUN usermod -a -G docker,docker2 jenkins-slave
 RUN chown root:docker /usr/bin/docker
-RUN usermod -a -G docker jenkins-slave
 
 # bash as default shell
 RUN ( \

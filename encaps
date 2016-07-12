@@ -2,6 +2,7 @@
 
 DOCKER_ENCAPS_IMG=${DOCKER_ENCAPS_IMG:-"ubuntu:latest"}
 DOCKER_ENCAPS_SHELL=${DOCKER_ENCAPS_SHELL:-"/bin/sh"}
+DOCKER_ENCAPS_NET=${DOCKER_ENCAPS_NET:-'--net=host'}
 
 if [ -z "$DOCKER_ENCAPS_NAME" ]; then
     if [ -z "$BUILD_TAG" ]; then
@@ -24,6 +25,7 @@ if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null; then
         --user $UID \
         --volume $PWD:$PWD \
         --workdir $PWD \
+        $DOCKER_ENCAPS_NET \
         $DOCKER_ENCAPS_ARGS \
         $DOCKER_ENCAPS_IMG \
             tail -f /dev/null > /dev/null

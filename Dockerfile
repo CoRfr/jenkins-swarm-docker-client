@@ -1,16 +1,16 @@
-FROM java:7-jre
+FROM openjdk:7-jre
 
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
-ENV JENKINS_SWARM_VERSION 2.1
-ENV SWARM_PLUGIN_URL http://maven.jenkins-ci.org/content/repositories/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
+ENV JENKINS_SWARM_VERSION 2.2
+ENV SWARM_PLUGIN_URL https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
 #ENV JENKINS_BUILD lastStableBuild
 #ENV JENKINS_SWARM_VERSION 2.1-SNAPSHOT
 #ENV SWARM_PLUGIN_URL https://jenkins.ci.cloudbees.com/job/plugins/job/swarm-plugin/org.jenkins-ci.plugins\$swarm-client/$JENKINS_BUILD/artifact/org.jenkins-ci.plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
 # Docker version follows stable from CoreOS
-ENV DOCKER_VERSION 1.9.1
+ENV DOCKER_VERSION 1.10.3
 ENV HOME /home/jenkins-slave
 
 RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave

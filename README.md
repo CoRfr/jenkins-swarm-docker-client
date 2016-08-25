@@ -1,6 +1,8 @@
 jenkins-swarm-docker-client
 ===========================
 
+![Pulls](https://img.shields.io/docker/pulls/corfr/jenkins-swarm-docker-client.svg) ![Automated](https://img.shields.io/docker/automated/corfr/jenkins-swarm-docker-client.svg)
+
 Based on `csanchez/jenkins-swarm-slave`
 
 Also provides docker in order to control the docker host.

@@ -17,7 +17,7 @@ if [ -z "$UID" ]; then
     UID=$(id -u)
 fi
 
-if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null; then
+if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null 2>&1; then
     docker pull $DOCKER_ENCAPS_IMG
     docker run \
         --detach \

@@ -4,6 +4,15 @@ DOCKER_ENCAPS_IMG=${DOCKER_ENCAPS_IMG:-"ubuntu:latest"}
 DOCKER_ENCAPS_SHELL=${DOCKER_ENCAPS_SHELL:-"/bin/sh"}
 DOCKER_ENCAPS_NET=${DOCKER_ENCAPS_NET:-'--net=host'}
 
+# Name of the container running this slave
+# If your container name is dynamic, you can eventually use:
+#  docker run --cidfile=/tmp/container.id -v /tmp/container.id:/tmp/container.id 
+if [ -e "/tmp/container.id" ]; then
+    CONTAINER_ID=$(cat /tmp/container.id)
+else
+    CONTAINER_ID=${CONTAINER_ID:-jenkins-slave}
+fi
+
 if [ -z "$DOCKER_ENCAPS_NAME" ]; then
     if [ -z "$BUILD_TAG" ]; then
         echo "No DOCKER_ENCAPS_NAME or BUILD_TAG"
@@ -17,7 +26,7 @@ if [ -z "$UID" ]; then
     UID=$(id -u)
 fi
 
-if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null 2>&1; then
+if ! docker inspect --container $DOCKER_ENCAPS_NAME > /dev/null 2>&1; then
     docker pull $DOCKER_ENCAPS_IMG
     docker run \
         --detach \
@@ -25,10 +34,11 @@ if ! docker inspect $DOCKER_ENCAPS_NAME > /dev/null 2>&1; then
         --user $UID \
         --volume $PWD:$PWD \
         --workdir $PWD \
+        --volumes-from $CONTAINER_ID \
         $DOCKER_ENCAPS_NET \
         $DOCKER_ENCAPS_ARGS \
         $DOCKER_ENCAPS_IMG \
-            tail -f /dev/null > /dev/null
+            /home/jenkins-slave/tini -- tail -f /dev/null > /dev/null
 
     if [ $? -ne 0 ]; then
         echo "Unable to launch container from $DOCKER_ENCAPS_IMG"

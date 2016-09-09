@@ -42,10 +42,10 @@ RUN ( \
     )
 
 # Add Tini
-ENV TINI_VERSION v0.9.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--", "/usr/local/bin/jenkins-slave.sh"]
+ENV TINI_VERSION v0.10.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /home/jenkins-slave/tini
+RUN chmod +x /home/jenkins-slave/tini
+ENTRYPOINT ["/home/jenkins-slave/tini", "--", "/usr/local/bin/jenkins-slave.sh"]
 
 # Docker encapsulation helpers
 COPY encaps /usr/bin/encaps
@@ -55,3 +55,4 @@ RUN chown -R jenkins-slave:jenkins-slave /home/jenkins-slave
 
 USER jenkins-slave
 VOLUME /home/jenkins-slave
+

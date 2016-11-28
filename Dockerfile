@@ -1,4 +1,4 @@
-FROM openjdk:7-jre
+FROM openjdk:8-jre
 
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 

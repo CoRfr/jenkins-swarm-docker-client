@@ -3,7 +3,7 @@ FROM openjdk:8-jre
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
 # Release
-#ENV JENKINS_SWARM_VERSION 2.2
+ENV JENKINS_SWARM_VERSION 2.3
 #ENV SWARM_PLUGIN_URL https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
 # Snapshot
@@ -12,7 +12,7 @@ MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 #ENV SWARM_PLUGIN_URL https://jenkins.ci.cloudbees.com/job/plugins/job/swarm-plugin/org.jenkins-ci.plugins\$swarm-client/$JENKINS_BUILD/artifact/org.jenkins-ci.plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
 # Dev build
-ENV SWARM_PLUGIN_URL https://github.com/CoRfr/swarm-plugin/releases/download/swarm-plugin-2.2-fixobjectid/swarm-client-jar-with-dependencies.jar
+ENV SWARM_PLUGIN_URL https://github.com/CoRfr/swarm-plugin/releases/download/swarm-plugin-$JENKINS_SWARM_VERSION/swarm-client-jar-with-dependencies.jar
 
 # Docker version follows stable from CoreOS
 ENV DOCKER_VERSION 1.10.3

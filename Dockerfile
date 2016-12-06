@@ -48,13 +48,19 @@ RUN ( \
 
 # Add Tini
 ENV TINI_VERSION v0.10.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /home/jenkins-slave/tini
-RUN chmod +x /home/jenkins-slave/tini
-ENTRYPOINT ["/home/jenkins-slave/tini", "--", "/usr/local/bin/jenkins-slave.sh"]
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /opt/tini/
+RUN chmod +x /opt/tini/tini
+VOLUME /opt/tini
+ENTRYPOINT ["/opt/tini/tini", "--", "/usr/local/bin/jenkins-slave.sh"]
 
-# Docker encapsulation helpers
-COPY encaps /usr/bin/encaps
-COPY encaps-cleanup /usr/bin/encaps-cleanup
+# encaps
+RUN ( \
+        cd /usr/bin && \
+        wget https://github.com/swi-infra/jenkins-docker-encaps/archive/master.zip && \
+        unzip master.zip && \
+        mv jenkins-docker-encaps-master/encaps* . && \
+        rm -rf master.zip jenkins-docker-encaps-master \
+    )
 
 RUN chown -R jenkins-slave:jenkins-slave /home/jenkins-slave
 

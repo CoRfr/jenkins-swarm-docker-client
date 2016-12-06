@@ -27,7 +27,7 @@ RUN ( \
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
 
 RUN ( apt-get update && \
-      apt-get -y install net-tools git python bzip2 jq && \
+      apt-get -y install net-tools git python bzip2 jq netcat && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \
@@ -48,7 +48,7 @@ RUN ( \
 
 # Add Tini
 ENV TINI_VERSION v0.10.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /opt/tini/
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /opt/tini/tini
 RUN chmod +x /opt/tini/tini
 VOLUME /opt/tini
 ENTRYPOINT ["/opt/tini/tini", "--", "/usr/local/bin/jenkins-slave.sh"]

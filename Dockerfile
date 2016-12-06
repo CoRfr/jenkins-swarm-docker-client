@@ -27,7 +27,7 @@ RUN ( \
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
 
 RUN ( apt-get update && \
-      apt-get -y install net-tools git python bzip2 jq netcat && \
+      apt-get -y install net-tools git python bzip2 jq netcat-openbsd && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \

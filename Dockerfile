@@ -3,8 +3,8 @@ FROM openjdk:8-jre
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
 # Release
-ENV JENKINS_SWARM_VERSION 2.3
-#ENV SWARM_PLUGIN_URL https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
+ENV JENKINS_SWARM_VERSION 3.3
+ENV SWARM_PLUGIN_URL https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION.jar
 
 # Snapshot
 #ENV JENKINS_BUILD lastStableBuild
@@ -12,10 +12,10 @@ ENV JENKINS_SWARM_VERSION 2.3
 #ENV SWARM_PLUGIN_URL https://jenkins.ci.cloudbees.com/job/plugins/job/swarm-plugin/org.jenkins-ci.plugins\$swarm-client/$JENKINS_BUILD/artifact/org.jenkins-ci.plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar
 
 # Dev build
-ENV SWARM_PLUGIN_URL https://github.com/CoRfr/swarm-plugin/releases/download/swarm-plugin-$JENKINS_SWARM_VERSION/swarm-client-jar-with-dependencies.jar
+#ENV SWARM_PLUGIN_URL https://github.com/CoRfr/swarm-plugin/releases/download/swarm-plugin-$JENKINS_SWARM_VERSION/swarm-client-jar-with-dependencies.jar
 
 # Docker version follows stable from CoreOS
-ENV DOCKER_VERSION 1.10.3
+ENV DOCKER_VERSION 1.12.6
 ENV HOME /home/jenkins-slave
 
 RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
@@ -31,8 +31,8 @@ RUN ( apt-get update && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \
-      wget -q -O /usr/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION && \
-      chmod +x /usr/bin/docker )
+      curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz && \
+      tar --strip-components=1 -xvzf docker-$DOCKER_VERSION.tgz -C /usr/bin )
 
 # Provide docker group and make the executable accessible (ids from CoreOS & Debian)
 RUN groupadd -g 233 docker

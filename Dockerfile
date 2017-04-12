@@ -3,7 +3,7 @@ FROM openjdk:8-jre
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
 # Release
-ENV JENKINS_SWARM_VERSION 3.3
+ENV JENKINS_SWARM_VERSION 3.4
 ENV SWARM_PLUGIN_URL https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION.jar
 
 # Snapshot
@@ -47,7 +47,7 @@ RUN ( \
     )
 
 # Add Tini
-ENV TINI_VERSION v0.10.0
+ENV TINI_VERSION v0.14.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /opt/tini/tini
 RUN chmod +x /opt/tini/tini
 VOLUME /opt/tini

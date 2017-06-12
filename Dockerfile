@@ -14,11 +14,19 @@ ENV SWARM_PLUGIN_URL https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins
 # Dev build
 #ENV SWARM_PLUGIN_URL https://github.com/CoRfr/swarm-plugin/releases/download/swarm-plugin-$JENKINS_SWARM_VERSION/swarm-client-jar-with-dependencies.jar
 
+ARG user=jenkins
+ARG group=jenkins
+ARG uid=1000
+ARG gid=1000
+ARG JENKINS_AGENT_HOME=/home/${user}
+
 # Docker version follows stable from CoreOS
 ENV DOCKER_VERSION 1.12.6
-ENV HOME /home/jenkins-slave
 
-RUN useradd -c "Jenkins Slave user" -d $HOME -m jenkins-slave
+RUN ( \
+      groupadd -g ${gid} ${group} && \
+      useradd -d "${JENKINS_AGENT_HOME}" -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}" )
+
 RUN ( \
       mkdir -p /usr/share/jenkins && \
       wget -O /usr/share/jenkins/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar $SWARM_PLUGIN_URL && \
@@ -37,7 +45,7 @@ RUN ( cd /tmp && \
 # Provide docker group and make the executable accessible (ids from CoreOS & Debian)
 RUN groupadd -g 233 docker
 RUN groupadd -g 999 docker2
-RUN usermod -a -G docker,docker2 jenkins-slave
+RUN usermod -a -G docker,docker2 "${user}"
 RUN chown root:docker /usr/bin/docker
 
 # bash as default shell
@@ -62,8 +70,8 @@ RUN ( \
         rm -rf master.zip jenkins-docker-encaps-master \
     )
 
-RUN chown -R jenkins-slave:jenkins-slave /home/jenkins-slave
+RUN chown -R ${uid}:${gid} ${JENKINS_AGENT_HOME}
 
-USER jenkins-slave
-VOLUME /home/jenkins-slave
+USER ${user}
+VOLUME ${JENKINS_AGENT_HOME}
 

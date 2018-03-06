@@ -1,4 +1,4 @@
-FROM openjdk:8-jre
+FROM openjdk:8-jre-stretch
 
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
@@ -34,8 +34,12 @@ RUN ( \
 
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
 
-RUN ( apt-get update && \
-      apt-get -y install net-tools git python bzip2 jq netcat-openbsd && \
+# Install few tools, including git from backports
+RUN ( \
+      echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
+      apt-get update && \
+      apt-get -y install -t stretch-backports git && \
+      apt-get -y install net-tools python bzip2 jq netcat-openbsd && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \

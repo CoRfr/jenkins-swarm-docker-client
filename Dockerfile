@@ -39,7 +39,7 @@ RUN ( \
       echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
       apt-get update && \
       apt-get -y install -t stretch-backports git && \
-      apt-get -y install net-tools python bzip2 jq netcat-openbsd && \
+      apt-get -y install net-tools python bzip2 jq netcat-openbsd rsync && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \

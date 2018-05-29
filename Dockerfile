@@ -39,7 +39,7 @@ RUN ( \
       echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
       apt-get update && \
       apt-get -y install -t stretch-backports git && \
-      apt-get -y install net-tools python bzip2 jq netcat-openbsd rsync && \
+      apt-get -y install net-tools python bzip2 lbzip2 jq netcat-openbsd rsync && \
       rm -rf /var/lib/apt/lists/* )
 
 RUN ( cd /tmp && \
@@ -59,7 +59,7 @@ RUN ( \
     )
 
 # Add Tini
-ENV TINI_VERSION v0.16.1
+ENV TINI_VERSION v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /opt/tini/tini
 RUN chmod +x /opt/tini/tini
 VOLUME /opt/tini

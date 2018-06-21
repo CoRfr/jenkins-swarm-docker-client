@@ -3,7 +3,7 @@ FROM openjdk:8-jre-stretch
 MAINTAINER Bertrand Roussel <broussel@sierrawireless.com>
 
 # Release
-ENV JENKINS_SWARM_VERSION 3.12
+ENV JENKINS_SWARM_VERSION 3.13
 ENV SWARM_PLUGIN_URL https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/swarm-client/$JENKINS_SWARM_VERSION/swarm-client-$JENKINS_SWARM_VERSION.jar
 
 # Snapshot

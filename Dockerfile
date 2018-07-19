@@ -46,6 +46,11 @@ RUN ( cd /tmp && \
       curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz && \
       tar --strip-components=1 -xvzf docker-$DOCKER_VERSION.tgz -C /usr/bin )
 
+# Create symlink to use lbzip2
+RUN ( cd /usr/local/bin && \
+      ln -s /usr/bin/lbzip2 bzip2 && \
+      ln -s /usr/bin/lbzip2 bunzip2 )
+
 # Provide docker group and make the executable accessible (ids from CoreOS & Debian)
 RUN groupadd -g 233 docker
 RUN groupadd -g 999 docker2

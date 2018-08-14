@@ -20,66 +20,13 @@ ARG uid=1000
 ARG gid=1000
 ARG JENKINS_AGENT_HOME=/home/${user}
 
-# Docker version follows stable from CoreOS
-ENV DOCKER_VERSION 1.12.6
-
-RUN ( \
-      groupadd -g ${gid} ${group} && \
-      useradd -d "${JENKINS_AGENT_HOME}" -u "${uid}" -g "${gid}" -m -s /bin/bash "${user}" )
-
-RUN ( \
-      mkdir -p /usr/share/jenkins && \
-      wget -O /usr/share/jenkins/swarm-client-$JENKINS_SWARM_VERSION-jar-with-dependencies.jar $SWARM_PLUGIN_URL && \
-      chmod -R 755 /usr/share/jenkins )
-
 COPY jenkins-slave.sh /usr/local/bin/jenkins-slave.sh
+COPY install.sh /tmp/install.sh
 
-# Install few tools, including git from backports
-RUN ( \
-      echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list && \
-      apt-get update && \
-      apt-get -y install -t stretch-backports git && \
-      apt-get -y install net-tools python bzip2 lbzip2 jq netcat-openbsd rsync && \
-      rm -rf /var/lib/apt/lists/* )
+RUN /tmp/install.sh
 
-RUN ( cd /tmp && \
-      curl -fsSLO https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz && \
-      tar --strip-components=1 -xvzf docker-$DOCKER_VERSION.tgz -C /usr/bin )
-
-# Create symlink to use lbzip2
-RUN ( cd /usr/local/bin && \
-      ln -s /usr/bin/lbzip2 bzip2 && \
-      ln -s /usr/bin/lbzip2 bunzip2 )
-
-# Provide docker group and make the executable accessible (ids from CoreOS & Debian)
-RUN groupadd -g 233 docker
-RUN groupadd -g 999 docker2
-RUN usermod -a -G docker,docker2 "${user}"
-RUN chown root:docker /usr/bin/docker
-
-# bash as default shell
-RUN ( \
-        echo "dash dash/sh boolean false" | debconf-set-selections && \
-        DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash \
-    )
-
-# Add Tini
-ENV TINI_VERSION v0.18.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /opt/tini/tini
-RUN chmod +x /opt/tini/tini
 VOLUME /opt/tini
 ENTRYPOINT ["/opt/tini/tini", "--", "/usr/local/bin/jenkins-slave.sh"]
-
-# encaps
-RUN ( \
-        cd /usr/bin && \
-        wget https://github.com/swi-infra/jenkins-docker-encaps/archive/master.zip && \
-        unzip master.zip && \
-        mv jenkins-docker-encaps-master/encaps* . && \
-        rm -rf master.zip jenkins-docker-encaps-master \
-    )
-
-RUN chown -R ${uid}:${gid} ${JENKINS_AGENT_HOME}
 
 USER ${user}
 VOLUME ${JENKINS_AGENT_HOME}
